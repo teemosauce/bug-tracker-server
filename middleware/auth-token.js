@@ -1,11 +1,11 @@
 const JWT = require("../utils/jwt")
 
-let whiteList = ['/user/login']
-module.exports = () => {
-    return (req, res, next) => {
-        console.log(req.method, req.url)
-        let { url } = req
-        if (whiteList.includes(url)) {
+// 请求白名单
+let whiteList = ['/user/login', '/user/register']
+module.exports = function () {
+    return function (req, res, next) {
+        let { path } = req // 请求路径
+        if (whiteList.includes(path)) {
             return next()
         }
 
@@ -15,7 +15,7 @@ module.exports = () => {
                 message: '没有token'
             })
         }
-
+        // token 格式 Bearer *********************
         let token = authorization.split(' ').pop()
         let success = JWT.verify(token)
         if (!success) {

@@ -7,6 +7,9 @@ let authToken = require('./middleware/auth-token')
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+const mongoose = require('mongoose');
+
+// mongoose.connect('mongodb://admin@124.221.54.148:27018/?authSource=admin')
 
 var app = express();
 
@@ -15,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// token 认证
 app.use(authToken())
 
 app.use('/', indexRouter);
